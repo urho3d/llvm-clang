@@ -1,0 +1,61 @@
+#
+# Copyright (c) 2008-2018 the Urho3D project.
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+#
+
+language: cpp
+compiler: gcc
+cache:
+  ccache: true
+  directories:
+    - /home/travis/cmake-3.10.2-Linux-x86_64/bin
+    - /home/travis/cmake-3.10.2-Linux-x86_64/share
+dist: trusty
+sudo: false
+addons: {apt: {packages: [python-pygments, python-yaml]}}
+env:
+  global:
+    - secure: R7mD0tBY1/SyYJBFpmmrRqpacTIWu//EwF0gkGU76oVTVP59KJ8HZO/0L7I61ixKKM7HkOQuIqEtgO6weCE7iSDmtE2jk8mIvraKFEXVbHMyE/V9bGZ510i47alvE+F1WYTlbgTNqwRy0//x8q1v5w5i73OoB4i7PcPDjpd2vtdQ/jz1e56SVL6pZk8W2b5kjQQHNkDnTF3M6/r/3n3LBZ9wJWRqEIlRddlNTmWUWSkKSdwZaGVAYECAa8GSmin6D5ImQ+V0CxlOnZNvbdn66qGOdEvDl3NFC+WOAyxUL6RI/Thp0BWaqfIOILGEanW0RL7SjKo1+Iw4Jd1LopWCzcueMiGk+3XswjCu4xNtDf56UzfgPrt2BhqrPKf6VsX4awv8aC90qws8JQ+Pi2tsCrEIdOywrb1ByKzLfL6N5wxjcwg12F26PXy+KJhzxucai7GCguMl5Qe5nSRm37E1in6o/xlpSbBat2b8wqabrmZryGPnyIuDmVGDANkpBGFYUraX4sWhmKeOP3XUNj2W0tGmLkTSW2vSWC9bDn3oA/ozrnOGqQ6t+ELlKLDCnLmOSmNQNDbiClpZRAQokZBHETmeLlZD7XFL933VAwwMkF1u/wNBxx1U+hy5wOy7QJ/dUrgo2Vpcuv4feuKDpZ2oUpuIAWnhLMI+B+BiNAoOayQ=
+    - NUMJOBS=4
+    - CCACHE_SLOPPINESS=pch_defines,time_macros
+    - CCACHE_COMPRESS=1
+  matrix:
+    - BRANCH=release_60
+    - DUMMY=1
+stage: build and install
+before_script:
+  - if [[ ! -f $HOME/cmake-3.10.2-Linux-x86_64/bin/cmake ]]; then wget --no-check-certificate https://cmake.org/files/v3.10/cmake-3.10.2-Linux-x86_64.tar.gz -O $HOME/cmake.tar.gz && tar xf $HOME/cmake.tar.gz -C $HOME && rm $HOME/cmake.tar.gz; fi
+  - export PATH=$HOME/cmake-3.10.2-Linux-x86_64/bin:$PATH
+  - export CC=/usr/lib/ccache/gcc CXX=/usr/lib/ccache/g++
+  - ccache -z -M 200M
+  - cmake --version
+script: rake
+after_script: ccache -s
+notifications: {email: {on_success: never, on_failure: change}}
+matrix:
+  fast_finish: true
+  include:
+    - stage: continuation
+      addons:
+      before_script: gem install travis
+      script: rake continuation
+      after_script:
+
+# vi: set ts=2 sw=2 expandtab:
