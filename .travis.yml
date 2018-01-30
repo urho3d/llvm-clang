@@ -36,10 +36,6 @@ env:
     - NUMJOBS=4
     - CCACHE_SLOPPINESS=pch_defines,time_macros
     - CCACHE_COMPRESS=1
-  matrix:
-    - BRANCH=release_60
-    - DUMMY=1
-stage: build and install
 before_script:
   - if [[ ! -f $HOME/cmake-3.10.2-Linux-x86_64/bin/cmake ]]; then wget --no-check-certificate https://cmake.org/files/v3.10/cmake-3.10.2-Linux-x86_64.tar.gz -O $HOME/cmake.tar.gz && tar xf $HOME/cmake.tar.gz -C $HOME && rm $HOME/cmake.tar.gz; fi
   - export PATH=$HOME/cmake-3.10.2-Linux-x86_64/bin:$PATH
@@ -52,6 +48,8 @@ notifications: {email: {on_success: never, on_failure: change}}
 matrix:
   fast_finish: true
   include:
+    - stage: stage: build and install
+      env: BRANCH=release_60
     - stage: continuation
       addons:
       before_script: gem install travis
