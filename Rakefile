@@ -37,17 +37,20 @@ task :build do
 end
 
 # Usage: NOT intended to be used manually
-desc 'Check whether the build job should be retriggered again'
+desc 'Check whether the build job should be restarted again'
 task :continuation do
   ours = `git log -1 --pretty=format:%ct`
-  theirs = `git fetch origin $BRANCH && git log -1 --pretty=format:%ct FETCH_HEAD`
+  theirs = `git fetch -q origin $BRANCH && git log -1 --pretty=format:%ct FETCH_HEAD`
   if ours > theirs
-    system 'travis login -g $GH_TOKEN --org --no-interactive >/dev/null 2>&1 && travis restart --org --no-interactive -r $TRAVIS_REPO_SLUG >/dev/null 2>&1' or abort 'Failed to retrigger the job'
+    puts 'Restarting the build job...'
+    system 'travis login -g $GH_TOKEN --org --no-interactive && travis cancel --org --no-interactive -r $TRAVIS_REPO_SLUG && travis restart --org --no-interactive -r $TRAVIS_REPO_SLUG' or abort 'Failed to restart the job'
+    sleep 500
+    abort 'Failed to restart the job'
   end
 end
 
 # Always call this function last in the multiple conditional check so that the checkpoint message does not being echoed unnecessarily
-def timeup quiet = false, cutoff_time = 40.0
+def timeup quiet = false, cutoff_time = 45.0
   unless File.exists?('start_time.log')
     system 'touch start_time.log split_time.log'
     return nil
