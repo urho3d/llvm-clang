@@ -743,6 +743,8 @@ OPTION(prefix_1, "fexceptions", fexceptions, Flag, f_Group, INVALID, nullptr, CC
 OPTION(prefix_1, "fexcess-precision=", fexcess_precision_EQ, Joined, clang_ignored_gcc_optimization_f_Group, INVALID, nullptr, Ignored, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "fexec-charset=", fexec_charset_EQ, Joined, f_Group, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "fexpensive-optimizations", anonymous_4, Flag, clang_ignored_gcc_optimization_f_Group, INVALID, nullptr, Ignored, 0, nullptr, nullptr, nullptr)
+OPTION(prefix_1, "fexperimental-isel", fexperimental_isel, Flag, f_clang_Group, INVALID, nullptr, 0, 0,
+       "Enables the experimental global instruction selector", nullptr, nullptr)
 OPTION(prefix_1, "fexperimental-new-pass-manager", fexperimental_new_pass_manager, Flag, f_clang_Group, INVALID, nullptr, CC1Option, 0,
        "Enables an experimental new pass manager in LLVM.", nullptr, nullptr)
 OPTION(prefix_1, "fextdirs=", fextdirs_EQ, Joined, f_Group, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
@@ -1085,6 +1087,8 @@ OPTION(prefix_1, "fno-eliminate-unused-debug-types", eliminate_unused_debug_type
 OPTION(prefix_1, "fno-emulated-tls", fno_emulated_tls, Flag, f_Group, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "fno-exceptions", fno_exceptions, Flag, f_Group, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "fno-expensive-optimizations", anonymous_5, Flag, clang_ignored_gcc_optimization_f_Group, INVALID, nullptr, Ignored, 0, nullptr, nullptr, nullptr)
+OPTION(prefix_1, "fno-experimental-isel", fno_experimental_isel, Flag, f_clang_Group, INVALID, nullptr, 0, 0,
+       "Disables the experimental global instruction selector", nullptr, nullptr)
 OPTION(prefix_1, "fno-experimental-new-pass-manager", fno_experimental_new_pass_manager, Flag, f_clang_Group, INVALID, nullptr, CC1Option, 0,
        "Disables an experimental new pass manager in LLVM.", nullptr, nullptr)
 OPTION(prefix_1, "fno-extended-identifiers", anonymous_9, Flag, f_Group, INVALID, nullptr, Unsupported, 0, nullptr, nullptr, nullptr)
